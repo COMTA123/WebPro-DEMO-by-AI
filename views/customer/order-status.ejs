@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/customer.css">
+</head>
+<body class="customer-body">
+  <main class="container py-4 order-page"
+        id="orderStatusPage" data-order-id="<%= order.order_id %>">
+    <a href="/customer/products" class="back-link">← กลับไปยังเมนู</a>
+
+    <section class="card border-0 shadow-sm mt-3">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between">
+          <div>
+            <span class="text-secondary">Order Number</span>
+            <h1 class="order-number">#<%= order.order_id %></h1>
+          </div>
+          <span class="status-pill status-<%= order.order_status %>"
+                id="orderStatusText"><%= order.order_status %></span>
+        </div>
+
+        <p class="text-secondary">
+          โต๊ะ <%= order.table_number %> · <%= order.created_at %>
+        </p>
+
+        <div class="progress-steps" data-current="<%= order.order_status %>">
+          <% [
+            ['pending', 'รับ Order แล้ว'],
+            ['preparing', 'กำลังจัดเตรียม'],
+            ['ready', 'พร้อมรับ'],
+            ['completed', 'เสร็จสมบูรณ์']
+          ].forEach(function(step) { %>
+            <div class="progress-step" data-step="<%= step[0] %>">
+              <span class="step-dot">✓</span>
+              <span><%= step[1] %></span>
+            </div>
+          <% }) %>
+        </div>
+
+        <h2 class="h5 mt-4">รายการสินค้า</h2>
+        <% items.forEach(function(item) { %>
+          <div class="border-bottom py-3 d-flex justify-content-between">
+            <div>
+              <strong><%= item.product_name %> × <%= item.quantity %></strong>
+              <% if (item.note) { %>
+                <div class="small text-secondary"><%= item.note %></div>
+              <% } %>
+            </div>
+            <span>฿<%= Number(item.subtotal).toFixed(2) %></span>
+          </div>
+        <% }) %>
+
+        <div class="d-flex justify-content-between h5 pt-3">
+          <span>ยอดรวม</span>
+          <strong class="price">฿<%= Number(order.total_paid).toFixed(2) %></strong>
+        </div>
+
+        <div class="status-summary mt-3">
+          <div>
+            <small>Payment</small>
+            <strong id="paymentStatusText">
+              <%= payment ? payment.payment_status : 'pending' %>
+            </strong>
+          </div>
+          <div>
+            <small>Order</small>
+            <strong id="orderStatusSummary"><%= order.order_status %></strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/customer.js"></script>
+</body>
+</html>

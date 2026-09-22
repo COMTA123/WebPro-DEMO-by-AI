@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/customer.css">
+</head>
+<body class="customer-body">
+  <main class="container py-4 product-detail-page">
+    <a href="/customer/products" class="back-link">← กลับไปยังเมนู</a>
+
+    <section class="card border-0 shadow-sm mt-3 overflow-hidden">
+      <% if (product.img_url) { %>
+        <img src="<%= product.img_url %>"
+             class="detail-image"
+             alt="<%= product.product_name %>"
+             onerror="this.style.display='none'">
+      <% } %>
+
+      <div class="card-body p-4">
+        <span class="badge text-bg-light"><%= product.category %></span>
+        <h1 class="h3 mt-2"><%= product.product_name %></h1>
+        <p class="text-secondary"><%= product.description || '' %></p>
+        <p class="h4 price">เริ่มต้น ฿<%= Number(product.base_price).toFixed(2) %></p>
+
+        <% if (Number(product.is_available) !== 1) { %>
+          <div class="alert alert-warning">สินค้านี้ไม่พร้อมจำหน่าย</div>
+        <% } else { %>
+          <form action="/customer/cart" method="post" id="customizeForm">
+            <input type="hidden" name="product_id" value="<%= product.product_id %>">
+
+            <fieldset class="mb-4">
+              <legend class="h6">ตัวเลือกเพิ่มเติม</legend>
+              <% if (!options.length) { %>
+                <p class="text-secondary small">สินค้านี้ไม่มีตัวเลือกเพิ่มเติม</p>
+              <% } %>
+
+              <% options.forEach(function(option) { %>
+                <label class="option-row">
+                  <span>
+                    <input class="form-check-input option-checkbox"
+                           type="checkbox"
+                           name="option_ids"
+                           value="<%= option.option_id %>"
+                           data-extra="<%= Number(option.extra_price || 0) %>">
+                    <%= option.option_name %>
+                  </span>
+                  <span>+฿<%= Number(option.extra_price || 0).toFixed(2) %></span>
+                </label>
+              <% }) %>
+            </fieldset>
+
+            <div class="mb-3">
+              <label class="form-label" for="note">หมายเหตุ</label>
+              <textarea class="form-control" id="note" name="note" maxlength="500"
+                        rows="3" placeholder="เช่น ไม่ใส่น้ำแข็ง"></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="quantity">จำนวน</label>
+              <div class="quantity-control">
+                <button type="button" class="btn btn-outline-secondary quantity-minus">−</button>
+                <input class="form-control text-center" id="quantity" name="quantity"
+                       type="number" min="1" max="99" value="1">
+                <button type="button" class="btn btn-outline-secondary quantity-plus">+</button>
+              </div>
+            </div>
+
+            <button class="btn btn-coffee btn-lg w-100" type="submit"
+                    data-base-price="<%= Number(product.base_price) %>"
+                    id="addButton">
+              เพิ่มลงตะกร้า — ฿<span id="calculatedPrice"><%= Number(product.base_price).toFixed(2) %></span>
+            </button>
+          </form>
+        <% } %>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/customer.js"></script>
+</body>
+</html>

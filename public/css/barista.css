@@ -1,0 +1,129 @@
+.kds-body {
+  min-height: 100vh;
+  background: #16191d;
+  color: #f4f4f4;
+}
+
+.kds-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  background: #252a30;
+  border-bottom: 1px solid #3a4047;
+}
+
+.kds-header h1 {
+  margin: 0;
+  font-size: 1.7rem;
+}
+
+.kds-header span {
+  color: #afb6bd;
+}
+
+.live-indicator {
+  color: #5ee188 !important;
+  font-weight: 700;
+}
+
+.kds-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(310px, 1fr));
+  gap: 18px;
+  overflow-x: auto;
+}
+
+.kds-column {
+  min-height: calc(100vh - 130px);
+  padding: 14px;
+  border-radius: 16px;
+  background: #20242a;
+}
+
+.kds-column > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 5px 15px;
+}
+
+.kds-column h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.kds-column header span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #353b43;
+}
+
+.kds-list {
+  display: grid;
+  gap: 14px;
+}
+
+.kds-card {
+  padding: 18px;
+  border-radius: 13px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 5px 18px rgba(0,0,0,.2);
+  border-left: 7px solid #888;
+}
+
+.status-border-pending {
+  border-left-color: #f5bd3d;
+}
+
+.status-border-preparing {
+  border-left-color: #3b8eea;
+}
+
+.status-border-ready {
+  border-left-color: #2fb66d;
+}
+
+.kds-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.35rem;
+}
+
+.kds-time {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+  color: #707070;
+}
+
+.kds-item {
+  padding: 13px 0;
+  border-bottom: 1px dashed #ddd;
+  font-size: 1.08rem;
+}
+
+.kds-item p {
+  margin: 5px 0 0;
+  color: #ad3f25;
+  font-weight: 600;
+}
+
+.ready-message {
+  padding: 13px;
+  border-radius: 10px;
+  background: #d9f5e5;
+  color: #126838;
+  text-align: center;
+  font-weight: 800;
+}
+
+@media (max-width: 1000px) {
+  .kds-columns {
+    grid-template-columns: repeat(3, 85vw);
+  }
+}

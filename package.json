@@ -1,0 +1,20 @@
+{
+  "name": "coffee-qr-ordering-system",
+  "version": "1.0.0",
+  "description": "Coffee QR Ordering System using Node.js, Express, EJS and SQLite",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.22.3",
+    "express-session": "^1.19.0",
+    "method-override": "^3.0.0",
+    "sqlite3": "^5.1.7"
+  }
+}

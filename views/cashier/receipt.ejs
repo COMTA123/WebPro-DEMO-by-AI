@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/cashier.css">
+</head>
+<body class="receipt-body">
+  <main class="receipt">
+    <header>
+      <h1>Coffee QR Ordering</h1>
+      <p>Receipt</p>
+    </header>
+
+    <div class="receipt-meta">
+      <div>Order: #<%= order.order_id %></div>
+      <div>Table: <%= order.table_number %></div>
+      <div>Time: <%= order.created_at %></div>
+      <div>Type: <%= order.order_type %></div>
+    </div>
+
+    <hr>
+
+    <% items.forEach(function(item) { %>
+      <div class="receipt-item">
+        <span>
+          <%= item.product_name %> × <%= item.quantity %>
+          <% if (item.note) { %>
+            <small><%= item.note %></small>
+          <% } %>
+        </span>
+        <strong>฿<%= Number(item.subtotal).toFixed(2) %></strong>
+      </div>
+    <% }) %>
+
+    <hr>
+
+    <div class="receipt-total">
+      <span>Total</span>
+      <strong>฿<%= Number(order.total_paid).toFixed(2) %></strong>
+    </div>
+
+    <p class="receipt-payment">
+      Payment: <%= payment ? payment.payment_method : '-' %><br>
+      Status: <%= payment ? payment.payment_status : 'pending' %>
+    </p>
+
+    <footer>ขอบคุณที่ใช้บริการ</footer>
+
+    <div class="no-print receipt-actions">
+      <button onclick="window.print()">พิมพ์ Receipt</button>
+      <a href="/cashier/orders/<%= order.order_id %>">กลับ</a>
+    </div>
+  </main>
+</body>
+</html>

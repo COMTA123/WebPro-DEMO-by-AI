@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/customer.css">
+</head>
+<body class="customer-body">
+  <header class="customer-header sticky-top">
+    <div class="container py-3 d-flex justify-content-between align-items-center">
+      <div>
+        <div class="small opacity-75">Coffee QR Ordering</div>
+        <strong>โต๊ะ <%= tableSession.table_number %></strong>
+      </div>
+      <a href="/customer/cart" class="btn btn-light position-relative">
+        ตะกร้า
+        <% if (cartCount > 0) { %>
+          <span class="badge rounded-pill bg-danger cart-badge"><%= cartCount %></span>
+        <% } %>
+      </a>
+    </div>
+  </header>
+
+  <main class="container py-4 customer-content">
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %> alert-dismissible fade show">
+        <%= flash.message %>
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <section class="hero-card mb-4">
+      <span class="small text-uppercase">Freshly made</span>
+      <h1 class="h3 mt-1">เลือกเมนูโปรดของคุณ</h1>
+      <p class="mb-0">เครื่องดื่มและขนม พร้อมเสิร์ฟถึงโต๊ะ</p>
+    </section>
+
+    <nav class="category-scroll mb-4">
+      <a class="btn <%= !selectedCategory ? 'btn-coffee' : 'btn-outline-coffee' %>"
+         href="/customer/products">ทั้งหมด</a>
+      <% categories.forEach(function(row) { %>
+        <a class="btn <%= String(selectedCategory) === String(row.category) ? 'btn-coffee' : 'btn-outline-coffee' %>"
+           href="/customer/products?category=<%= encodeURIComponent(row.category) %>">
+          <%= row.category %>
+        </a>
+      <% }) %>
+    </nav>
+
+    <div class="row g-3">
+      <% if (!products.length) { %>
+        <div class="col-12">
+          <div class="empty-state">ไม่พบสินค้าในหมวดหมู่นี้</div>
+        </div>
+      <% } %>
+
+      <% products.forEach(function(product) { %>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <article class="card product-card h-100 border-0 shadow-sm">
+            <% if (product.img_url) { %>
+              <img src="<%= product.img_url %>"
+                   class="card-img-top product-image"
+                   alt="<%= product.product_name %>"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+              <div class="product-placeholder" style="display:none">☕</div>
+            <% } else { %>
+              <div class="product-placeholder">☕</div>
+            <% } %>
+
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between gap-2">
+                <span class="badge text-bg-light"><%= product.category %></span>
+                <span class="availability <%= Number(product.is_available) === 1 ? 'available' : 'unavailable' %>">
+                  <%= Number(product.is_available) === 1 ? 'พร้อมขาย' : 'หมด' %>
+                </span>
+              </div>
+
+              <h2 class="h5 mt-3"><%= product.product_name %></h2>
+              <p class="text-secondary small flex-grow-1">
+                <%= product.description || 'เมนูพิเศษจากทางร้าน' %>
+              </p>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <strong class="price">฿<%= Number(product.base_price).toFixed(2) %></strong>
+                <% if (Number(product.is_available) === 1) { %>
+                  <a href="/customer/products/<%= product.product_id %>"
+                     class="btn btn-coffee">เลือก</a>
+                <% } else { %>
+                  <button class="btn btn-secondary" disabled>ไม่พร้อมขาย</button>
+                <% } %>
+              </div>
+            </div>
+          </article>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a class="active" href="/customer/products">เมนู</a>
+    <a href="/customer/cart">ตะกร้า (<%= cartCount %>)</a>
+    <% if (typeof lastOrderId !== 'undefined' && lastOrderId) { %>
+      <a href="/customer/orders/<%= lastOrderId %>">สถานะ</a>
+    <% } %>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/customer.js"></script>
+</body>
+</html>

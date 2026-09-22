@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/barista.css">
+</head>
+<body class="kds-body">
+  <header class="kds-header">
+    <div>
+      <h1>Barista Orders</h1>
+      <span>รายการ Order ที่ชำระเงินแล้ว</span>
+    </div>
+    <a class="btn btn-outline-light" href="/barista/dashboard">กลับ KDS</a>
+  </header>
+
+  <main class="container-fluid py-4">
+    <div class="row g-3">
+      <% cards.forEach(function(order) { %>
+        <div class="col-md-6 col-xl-4">
+          <article class="kds-card status-border-<%= order.order_status %>">
+            <div class="kds-card-header">
+              <strong>#<%= order.order_id %></strong>
+              <span>โต๊ะ <%= order.table_number %></span>
+            </div>
+            <div class="kds-time"><%= order.created_at %></div>
+            <% order.items.forEach(function(item) { %>
+              <div class="kds-item">
+                <strong><%= item.quantity %>× <%= item.product_name %></strong>
+                <% if (item.note) { %><p><%= item.note %></p><% } %>
+              </div>
+            <% }) %>
+          </article>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+</body>
+</html>

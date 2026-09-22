@@ -1,0 +1,86 @@
+:root {
+  --coffee: #6f4e37;
+  --coffee-dark: #3d2b1f;
+  --coffee-light: #efe3d8;
+  --cream: #faf7f2;
+  --accent: #c78b52;
+  --success: #2f855a;
+  --danger: #c53030;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #302721;
+}
+
+a {
+  color: var(--coffee);
+}
+
+.btn-coffee {
+  color: #fff;
+  background: var(--coffee);
+  border-color: var(--coffee);
+}
+
+.btn-coffee:hover,
+.btn-coffee:focus {
+  color: #fff;
+  background: var(--coffee-dark);
+  border-color: var(--coffee-dark);
+}
+
+.btn-outline-coffee {
+  color: var(--coffee);
+  border-color: var(--coffee);
+}
+
+.btn-outline-coffee:hover {
+  color: #fff;
+  background: var(--coffee);
+}
+
+.price {
+  color: var(--coffee);
+}
+
+.error-card {
+  max-width: 520px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-preparing {
+  background: #cfe2ff;
+  color: #084298;
+}
+
+.status-ready,
+.status-paid,
+.status-completed {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-failed,
+.status-cancelled {
+  background: #f8d7da;
+  color: #842029;
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/cashier.css">
+</head>
+<body>
+  <aside class="admin-sidebar">
+    <h2>Coffee POS</h2>
+    <a href="/cashier/dashboard">Dashboard</a>
+    <a href="/cashier/orders">Orders</a>
+    <a class="active" href="/cashier/payments">Payments</a>
+    <a href="/barista/dashboard">Barista KDS</a>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <h1 class="h3 mb-0">Payment Management</h1>
+    </header>
+
+    <% if (flash) { %>
+      <div class="alert alert-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+
+    <section class="card border-0 shadow-sm">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Payment</th>
+              <th>Order</th>
+              <th>โต๊ะ</th>
+              <th>วิธีชำระ</th>
+              <th>ยอด</th>
+              <th>Status</th>
+              <th>Cashier</th>
+              <th>ดำเนินการ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% payments.forEach(function(payment) { %>
+              <tr>
+                <td>#<%= payment.payment_id %></td>
+                <td>
+                  <a href="/cashier/orders/<%= payment.order_id %>">
+                    #<%= payment.order_id %>
+                  </a>
+                </td>
+                <td><%= payment.table_number %></td>
+                <td><%= payment.payment_method %></td>
+                <td>฿<%= Number(payment.total_paid).toFixed(2) %></td>
+                <td>
+                  <span class="status-pill status-<%= payment.payment_status %>">
+                    <%= payment.payment_status %>
+                  </span>
+                </td>
+                <td>
+                  <%= payment.first_name
+                    ? payment.first_name + ' ' + payment.last_name
+                    : '-' %>
+                </td>
+                <td>
+                  <% if (payment.payment_status === 'pending') { %>
+                    <form method="post"
+                          action="/cashier/payments/<%= payment.payment_id %>?_method=PUT"
+                          class="payment-form">
+                      <select class="form-select form-select-sm"
+                              name="emp_id" required>
+                        <option value="">เลือก Cashier</option>
+                        <% cashiers.forEach(function(employee) { %>
+                          <option value="<%= employee.emp_id %>">
+                            <%= employee.first_name %> <%= employee.last_name %>
+                          </option>
+                        <% }) %>
+                      </select>
+                      <input type="hidden" name="payment_status" value="paid">
+                      <button class="btn btn-success btn-sm mt-2 w-100">
+                        Confirm Paid
+                      </button>
+                    </form>
+                  <% } else { %>
+                    <a class="btn btn-sm btn-outline-coffee"
+                       href="/cashier/receipt/<%= payment.order_id %>">
+                      Receipt
+                    </a>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/cashier.js"></script>
+</body>
+</html>
